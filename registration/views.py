@@ -7,17 +7,18 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.models import User
+from django.views import View
 
-
-def home(request):
-    return render(request, 'registration/index.html')
-
-
-def signup(request):
-	if 'username' not in request.POST:
+class SignUpView(View):
+    def get(self, request):
 	    return render(request, 'registration/signup.html')
-	else:
+
+    def post(self, request):
 	    user = User.objects.create_user(request.POST['username'], request.POST[
 	                                    'email'], request.POST['password'])
 	    user.save()
 	    return render(request, 'registration/login.html')
+
+class HomeView(View):
+    def get(self, request):
+	    return render(request, 'registration/index.html')
