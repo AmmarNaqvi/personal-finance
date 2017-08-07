@@ -1,0 +1,31 @@
+
+{% block content %}
+<form action="{% url 'signup' %}" method="post">
+    {% csrf_token %}
+    <div>
+        <label for="id_username">
+            Username:
+        </label>
+        <input autofocus="" id="id_username" maxlength="254" name="username" required="" type="text">
+        </input>
+    </div>
+    <div>
+        <label for="id_email">
+            Email:
+        </label>
+        <input autofocus="" id="id_email" maxlength="254" name="email" required="" type="email">
+        </input>
+    </div>
+    <div>
+        <label for="id_password">
+            Password:
+        </label>
+        <input id="id_password" name="password" required="" type="password">
+        </input>
+    </div>
+    <div>
+        <input type="submit" value="register"/>
+        <input name="next" type="hidden" value="{{ next }}"/>
+    </div>
+</form>
+{% endblock %}
