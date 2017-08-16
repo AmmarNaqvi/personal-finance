@@ -36,8 +36,8 @@ class ProfileView(View):
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.profile)
         return render(request, 'registration/profile.html', {
-        	'user_form': user_form,
-        	'profile_form': profile_form
+            'user_form': user_form,
+            'profile_form': profile_form
         })
 
     def post(self, request):
@@ -47,7 +47,11 @@ class ProfileView(View):
             profile_form.save()
             user_form.save()
             return redirect('home')
-        return render(request, 'registration/profile.html', {
-        	'user_form': user_form,
-        	'profile_form': profile_form
-        })
+        return render(
+            request,
+            'registration/profile.html',
+            {
+                'user_form': user_form,
+                'profile_form': profile_form
+            }
+        )

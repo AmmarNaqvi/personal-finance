@@ -22,3 +22,16 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+class Category(models.Model):
+    class Meta:
+		verbose_name_plural = "categories"
+
+    FLOW_CHOICES = (
+        ('negative', 'Source'),
+        ('positive', 'Expenditure'),
+    )
+
+    name = models.CharField(max_length=30)
+    image = models.ImageField()
+    flow = models.CharField(max_length=30, choices=FLOW_CHOICES)
