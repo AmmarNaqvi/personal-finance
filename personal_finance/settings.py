@@ -105,6 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ######################### AUTH ############################
 
+AUTHENTICATION_BACKENDS = ('registration.backends.CustomAuth',)
 
 ###########################################################
 

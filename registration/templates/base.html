@@ -31,7 +31,7 @@
     
     <div class="container">
     {% if user.is_authenticated %}
-        You are currently logged in as {{ user.email }}, not you? <a href="{% url 'logout' %}?next={{request.path}}">Sign out</a>
+        You are currently logged in as {{ user.username }}, not you? <a href="{% url 'logout' %}?next={{request.path}}">Sign out</a>
     {% else %}
         <a href="{% url 'signup' %}">Register</a> or <a href="{% url 'login' %}?next={{request.path}}">Login</a>
     {% endif %}
