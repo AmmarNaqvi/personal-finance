@@ -5,6 +5,7 @@ class CustomAuth(object):
     def authenticate(self, username=None, password=None):
         try:
             user = User.objects.get(username=username)
+            print(password)
             if user.check_password(password):
                 return user
         except User.DoesNotExist:
