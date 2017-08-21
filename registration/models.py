@@ -19,6 +19,8 @@ class Profile(models.Model):
     bio = models.TextField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+    def __str__(self):
+        return self.user.username
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
@@ -37,6 +39,8 @@ class IncomeCategory(models.Model):
 
     name = models.CharField(max_length=30)
     image = models.ImageField()
+    def __str__(self):
+        return self.name
 
 class ExpenditureCategory(models.Model):
     class Meta:
@@ -46,6 +50,8 @@ class ExpenditureCategory(models.Model):
 
     name = models.CharField(max_length=30)
     image = models.ImageField()
+    def __str__(self):
+        return self.name
 
 class IncomeTransaction(models.Model):
     class Meta:
@@ -56,6 +62,8 @@ class IncomeTransaction(models.Model):
     category_id = models.ForeignKey(IncomeCategory, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
+    def __str__(self):
+        return self.amount
 
 class ExpenditureTransaction(models.Model):
     class Meta:
@@ -66,3 +74,5 @@ class ExpenditureTransaction(models.Model):
     category_id = models.ForeignKey(IncomeCategory, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
+    def __str__(self):
+        return self.amount
