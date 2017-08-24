@@ -10,7 +10,13 @@ from django.shortcuts import render
 from django.views import View
 
 from .forms import ProfileForm, UserForm
+from .models import Profile, IncomeCategory, ExpenditureCategory, IncomeTransaction, ExpenditureTransaction
 
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from .serializers import ProfileSerializer, IncomeCategorySerializer, ExpenditureCategorySerializer, IncomeTransactionSerializer, ExpenditureTransactionSerializer 
+from rest_framework.decorators import detail_route
+from rest_framework import renderers
 
 class SignUpView(View):
 
@@ -63,3 +69,56 @@ class ProfileView(View):
                 'profile_form': profile_form
             }
         )
+
+class ProfileAPI(ModelViewSet):
+
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        profile = self.get_object()
+        return Response(profile.highlighted)
+
+
+class IncomeCategoryAPI(ModelViewSet):
+
+    queryset = IncomeCategory.objects.all()
+    serializer_class = IncomeCategorySerializer
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        income_category = self.get_object()
+        return Response(income_category.highlighted)
+
+class ExpenditureCategoryAPI(ModelViewSet):
+
+    queryset = ExpenditureCategory.objects.all()
+    serializer_class = ExpenditureCategorySerializer
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        expenditure_category = self.get_object()
+        return Response(expenditure_category.highlighted)
+
+
+class IncomeTransactionAPI(ModelViewSet):
+
+    queryset = IncomeTransaction.objects.all()
+    serializer_class = IncomeTransactionSerializer
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        income_transaction = self.get_object()
+        return Response(income_transaction.highlighted)
+
+
+class ExpenditureTransactionAPI(ModelViewSet):
+
+    queryset = ExpenditureTransaction.objects.all()
+    serializer_class = ExpenditureTransactionSerializer
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        expenditure_transaction = self.get_object()
+        return Response(expenditure_transaction.highlighted)

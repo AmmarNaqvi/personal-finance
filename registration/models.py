@@ -38,7 +38,7 @@ class IncomeCategory(models.Model):
         db_table = 'income_categories'
 
     name = models.CharField(max_length=30)
-    image = models.ImageField()
+    image = models.ImageField(upload_to = 'images/income_categories/')
     def __str__(self):
         return self.name
 
@@ -49,7 +49,7 @@ class ExpenditureCategory(models.Model):
         db_table = 'expenditure_categories'
 
     name = models.CharField(max_length=30)
-    image = models.ImageField()
+    image = models.ImageField(upload_to = 'images/expenditure_categories/')
     def __str__(self):
         return self.name
 
