@@ -24,11 +24,11 @@ from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
-router.register(r'api/profiles', ProfileAPI)
-router.register(r'api/income_categories', IncomeCategoryAPI)
-router.register(r'api/expenditure_categories', ExpenditureCategoryAPI)
-router.register(r'api/income_transactions', IncomeTransactionAPI)
-router.register(r'api/expenditure_transactions', ExpenditureTransactionAPI)
+router.register(r'profiles', ProfileAPI)
+router.register(r'income_categories', IncomeCategoryAPI)
+router.register(r'expenditure_categories', ExpenditureCategoryAPI)
+router.register(r'income_transactions', IncomeTransactionAPI)
+router.register(r'expenditure_transactions', ExpenditureTransactionAPI)
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -36,7 +36,7 @@ urlpatterns = [
     url(r'^signup$', SignUpView.as_view(), name='signup'),
     url(r'', include('django.contrib.auth.urls')),
 	url(r'^profile/$', ProfileView.as_view(), name='profile'),
-    url(r'^', include(router.urls)),
+    url(r'^api/', include(router.urls)),
 ]
 
 if settings.DEBUG:
