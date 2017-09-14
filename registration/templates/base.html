@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
-    <head>  
+    <head>
         <title>
-            Email Auth Tutorial
+            Personal Finance
         </title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
             <!-- Latest compiled and minified CSS -->
-            <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-                <style type="text/css">
-                    body { padding-top: 60px; }
-                </style>
-            </link>
+            <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"/>
+            <style type="text/css">
+                body { padding-top: 60px; }
+            </style>
+            {% block styles %}
+
+            {% endblock %}
         </meta>
     </head>
     <body>
@@ -63,7 +65,6 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js">
         </script>
-
     {% block scripts %}
 
     {% endblock %}

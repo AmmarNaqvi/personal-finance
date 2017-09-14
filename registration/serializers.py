@@ -15,7 +15,7 @@ class IncomeCategorySerializer(serializers.ModelSerializer):
 	"""docstring for IncomeCategorySerializer"""
 	class Meta:
 		model = IncomeCategory
-		fields = ('name', 'image')
+		fields = ('name', 'icon')
 
 
 
@@ -23,7 +23,7 @@ class ExpenditureCategorySerializer(serializers.ModelSerializer):
 	"""docstring for ExpenditureCategorySerializer"""
 	class Meta:
 		model = ExpenditureCategory
-		fields = ('name', 'image')
+		fields = ('name', 'icon')
 
 
 class IncomeTransactionSerializer(serializers.ModelSerializer):

@@ -31,6 +31,26 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+class Balance(models.Model):
+    class Meta:
+        verbose_name = _('Balance')
+        verbose_name_plural = _('Balances')
+        db_table = 'user_balance'
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    def __str__(self):
+        return self.user.username
+
+@receiver(post_save, sender=User)
+def create_user_balance(sender, instance, created, **kwargs):
+    if created:
+        Balance.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_balance(sender, instance, **kwargs):
+    instance.balance.save()
+
 class IncomeCategory(models.Model):
     class Meta:
         verbose_name = _('Income Category')
@@ -38,7 +58,7 @@ class IncomeCategory(models.Model):
         db_table = 'income_categories'
 
     name = models.CharField(max_length=30)
-    image = models.ImageField(upload_to = 'images/income_categories/')
+    icon = models.ImageField(upload_to = 'images/income_categories/')
     def __str__(self):
         return self.name
 
@@ -49,7 +69,7 @@ class ExpenditureCategory(models.Model):
         db_table = 'expenditure_categories'
 
     name = models.CharField(max_length=30)
-    image = models.ImageField(upload_to = 'images/expenditure_categories/')
+    icon = models.ImageField(upload_to = 'images/expenditure_categories/')
     def __str__(self):
         return self.name
 
@@ -59,8 +79,8 @@ class IncomeTransaction(models.Model):
         verbose_name_plural = _('Income Transactions')
         db_table = 'income_transactions'
 
-    category_id = models.ForeignKey(IncomeCategory, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(IncomeCategory, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     def __str__(self):
         return self.amount
@@ -71,8 +91,8 @@ class ExpenditureTransaction(models.Model):
         verbose_name_plural = _('Expenditure Transactions')
         db_table = 'expenditure_transactions'
 
-    category_id = models.ForeignKey(IncomeCategory, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(ExpenditureCategory, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
     def __str__(self):
         return self.amount
