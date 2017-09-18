@@ -1,7 +1,12 @@
 from rest_framework import serializers
 
 from .models import Profile, IncomeCategory, ExpenditureCategory, IncomeTransaction, ExpenditureTransaction
+from django.contrib.auth.models import User
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username')
 
 class ProfileSerializer(serializers.ModelSerializer):
 	"""docstring for ProfileSerializer"""

@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
-from registration.views import SignUpView, HomeView, ProfileView, ProfileAPI, IncomeCategoryAPI, ExpenditureCategoryAPI, IncomeTransactionAPI, ExpenditureTransactionAPI
+from registration.views import SignUpView, HomeView, ProfileView, UserAPI, ProfileAPI, IncomeCategoryAPI, ExpenditureCategoryAPI, IncomeTransactionAPI, ExpenditureTransactionAPI
 
 from rest_framework.routers import DefaultRouter
 
 
 router = DefaultRouter()
+router.register(r'users', UserAPI)
 router.register(r'profiles', ProfileAPI)
 router.register(r'income_categories', IncomeCategoryAPI)
 router.register(r'expenditure_categories', ExpenditureCategoryAPI)
@@ -35,10 +36,17 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^signup$', SignUpView.as_view(), name='signup'),
     url(r'', include('django.contrib.auth.urls')),
-	url(r'^profile/$', ProfileView.as_view(), name='profile'),
+    url(r'^profile/$', ProfileView.as_view(), name='profile'),
     url(r'^api/', include(router.urls)),
 ]
 
+urlpatterns += [
+    url(r'^api/', include('rest_framework.urls',
+                          namespace='rest_framework')),
+]
+
 if settings.DEBUG:
-	urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

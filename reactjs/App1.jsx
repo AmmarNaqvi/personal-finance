@@ -8,6 +8,7 @@ import { reducer as formReducer } from "redux-form";
 import * as reducers from "./reducers";
 
 import Container from "./containers/Container";
+import SignupCard from "./components/SignupCard";
 
 let finalCreateStore = compose(
 	applyMiddleware(thunk),
@@ -21,9 +22,12 @@ let store = finalCreateStore(reducer);
 class App1 extends React.Component {
 	render() {
 		return (
-			<Provider store={store}>
-				<Container />
-			</Provider>
+			<div>
+				<SignupCard />
+				{/*<Provider store={store}>
+					<Container />
+				</Provider>*/}
+			</div>
 		);
 	}
 }

@@ -11,12 +11,16 @@ from django.views import View
 
 from .forms import ProfileForm, UserForm
 from .models import Profile, IncomeCategory, ExpenditureCategory, IncomeTransaction, ExpenditureTransaction
+from django.contrib.auth.models import User
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from .serializers import ProfileSerializer, IncomeCategorySerializer, ExpenditureCategorySerializer, IncomeTransactionSerializer, ExpenditureTransactionSerializer 
+from .serializers import ProfileSerializer, IncomeCategorySerializer, ExpenditureCategorySerializer, IncomeTransactionSerializer, ExpenditureTransactionSerializer
+from .serializers import UserSerializer
+
 from rest_framework.decorators import detail_route
 from rest_framework import renderers
+
 
 class SignUpView(View):
 
@@ -25,7 +29,7 @@ class SignUpView(View):
         return render(request, 'registration/signup.html')
 
     def post(self, request):
-    	
+
         user = User.objects.create_user(request.POST['username'], request.POST[
                                         'email'], request.POST['password'])
         user.save()
@@ -70,6 +74,17 @@ class ProfileView(View):
             }
         )
 
+
+class UserAPI(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @detail_route(renderer_classes=[renderers.StaticHTMLRenderer])
+    def highlight(self, request, *args, **kwargs):
+        user = self.get_object()
+        return Response(user.highlighted)
+
+
 class ProfileAPI(ModelViewSet):
 
     queryset = Profile.objects.all()
@@ -90,6 +105,7 @@ class IncomeCategoryAPI(ModelViewSet):
     def highlight(self, request, *args, **kwargs):
         income_category = self.get_object()
         return Response(income_category.highlighted)
+
 
 class ExpenditureCategoryAPI(ModelViewSet):
 
