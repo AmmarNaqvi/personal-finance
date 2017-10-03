@@ -2,34 +2,52 @@ import React from "react";
 import { render } from "react-dom";
 import { createStore, compose, applyMiddleware, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import thunk from "redux-thunk";
+import thunkMiddleware from "redux-thunk";
+
 import { reducer as formReducer } from "redux-form";
 
-import * as reducers from "./reducers";
+import reducers from "./reducers/reducers";
 
-import Container from "./containers/Container";
-import SignupCard from "./components/SignupCard";
+import LoginContainer from "./containers/LoginContainer";
+import SignupContainer from "./containers/SignupContainer";
+import HomeContainer from "./containers/HomeContainer";
+import PrivateRoute from "./components/PrivateRoute";
 
-let finalCreateStore = compose(
-	applyMiddleware(thunk),
-	window.devToolsExtension ? window.devToolsExtension() : f => f
-)(createStore);
-let reducer = combineReducers({
+import {
+	BrowserRouter as Router,
+	Route,
+	Link,
+	Redirect,
+	withRouter
+} from "react-router-dom";
+
+const rootReducer = combineReducers({
+	// ...your other reducers here
+	// you have to pass formReducer under 'form' key,
+	// for custom keys look up the docs for 'getFormState'
+	toggle: reducers,
 	form: formReducer
 });
-let store = finalCreateStore(reducer);
+
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
 
 class App1 extends React.Component {
 	render() {
 		return (
-			<div>
-				<SignupCard />
-				{/*<Provider store={store}>
-					<Container />
-				</Provider>*/}
-			</div>
+			<Provider store={store}>
+				<div>
+					<PrivateRoute exact path="/" component={HomeContainer} />
+					<Route path="/login" component={LoginContainer} />
+					<Route path="/signup" component={SignupContainer} />
+				</div>
+			</Provider>
 		);
 	}
 }
 
-render(<App1 />, document.getElementById("App"));
+render(
+	<Router>
+		<App1 />
+	</Router>,
+	document.getElementById("App")
+);

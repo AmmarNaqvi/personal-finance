@@ -18,10 +18,9 @@ from django.contrib import admin
 from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
-from registration.views import SignUpView, HomeView, ProfileView, UserAPI, ProfileAPI, IncomeCategoryAPI, ExpenditureCategoryAPI, IncomeTransactionAPI, ExpenditureTransactionAPI
+from registration.views import HomeView, UserAPI, ProfileAPI, IncomeCategoryAPI, ExpenditureCategoryAPI, IncomeTransactionAPI, ExpenditureTransactionAPI
 
 from rest_framework.routers import DefaultRouter
-
 
 router = DefaultRouter()
 router.register(r'users', UserAPI)
@@ -34,15 +33,11 @@ router.register(r'expenditure_transactions', ExpenditureTransactionAPI)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', HomeView.as_view(), name='home'),
-    url(r'^signup$', SignUpView.as_view(), name='signup'),
-    url(r'', include('django.contrib.auth.urls')),
-    url(r'^profile/$', ProfileView.as_view(), name='profile'),
     url(r'^api/', include(router.urls)),
 ]
 
 urlpatterns += [
-    url(r'^api/', include('rest_framework.urls',
-                          namespace='rest_framework')),
+    url(r'^.*/', HomeView.as_view(), name='base')
 ]
 
 if settings.DEBUG:

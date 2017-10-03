@@ -5,16 +5,12 @@ import TextInput from "./form_components/TextInput";
 import ImageInput from "./form_components/ImageInput";
 
 class CategoryForm extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		const { handleSubmit, pristine, reset, submitting } = this.props;
 
 		return (
 			<form onSubmit={handleSubmit} className="form-horizontal">
-				<TextInput labelText="Name" handleChange={this.handleChange} />
+				<TextInput labelText="Name" />
 				<ImageInput labelText="Icon" />
 				<div className="form-group">
 					<div className="col-sm-offset-2 col-sm-10">

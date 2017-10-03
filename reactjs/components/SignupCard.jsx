@@ -1,11 +1,14 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "material-ui/styles";
-import Card, { CardActions, CardContent } from "material-ui/Card";
+import Card from "material-ui/Card";
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 import Grid from "material-ui/Grid";
 import Avatar from "material-ui/Avatar";
+import { Field } from "redux-form";
+import { reduxForm } from "redux-form";
+import validate from "../validate/validate";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
 	root: {
@@ -28,18 +31,38 @@ const styles = theme => ({
 		width: "100%",
 		marginTop: theme.spacing.unit * 2,
 		marginBottom: theme.spacing.unit * 2
+	},
+	link: {
+		textDecoration: "none"
 	}
 });
 
-function SignupCard(props) {
+const renderTextField = ({
+	input,
+	label,
+	meta: { touched, error },
+	...custom
+}) => (
+	<TextField
+		label={label}
+		error={touched && error ? true : false}
+		helperText={touched && error}
+		{...input}
+		{...custom}
+	/>
+);
+
+const SignupCard = props => {
 	const classes = props.classes;
+
+	const { handleSubmit, pristine, reset, submitting } = props;
 
 	return (
 		<Grid container className={classes.root}>
 			<Grid container align="center" justify="center">
 				<Grid item xs={10} md={5}>
 					<Card className={classes.card}>
-						<CardContent>
+						<form onSubmit={handleSubmit}>
 							<Grid container align="center" justify="center">
 								<Avatar
 									alt="Logo"
@@ -49,25 +72,31 @@ function SignupCard(props) {
 							</Grid>
 							<Grid container align="center" justify="center">
 								<Grid item xs={10} md={7}>
-									<TextField
-										label="Email"
+									<Field
+										name="email"
+										component={renderTextField}
 										type="email"
+										label="Email"
 										fullWidth
 										margin="normal"
 									/>
 								</Grid>
 								<Grid item xs={10} md={7}>
-									<TextField
+									<Field
+										name="username"
+										component={renderTextField}
+										type="text"
 										label="Username"
 										fullWidth
 										margin="normal"
 									/>
 								</Grid>
 								<Grid item xs={10} md={7}>
-									<TextField
+									<Field
+										name="password"
+										component={renderTextField}
 										label="Password"
 										type="password"
-										autoComplete="current-password"
 										fullWidth
 										margin="normal"
 									/>
@@ -75,23 +104,36 @@ function SignupCard(props) {
 								<Grid item xs={10} md={7}>
 									<Button
 										className={classes.button}
+										disabled={pristine || submitting}
+										type="submit"
 										raised
 										color="primary"
 									>
 										Register
 									</Button>
 								</Grid>
+								<Grid item xs={10} md={7}>
+									<Link className={classes.link} to="/login/">
+										<Button
+											className={classes.button}
+											onClick={props.toggle}
+											color="primary"
+										>
+											Already have an account? Login
+										</Button>
+									</Link>
+								</Grid>
 							</Grid>
-						</CardContent>
+						</form>
 					</Card>
 				</Grid>
 			</Grid>
 		</Grid>
 	);
-}
-
-SignupCard.propTypes = {
-	classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SignupCard);
+export default reduxForm({
+	// a unique name for the form
+	form: "signup",
+	validate
+})(withStyles(styles)(SignupCard));

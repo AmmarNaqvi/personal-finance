@@ -1,4 +1,1 @@
-export {
-	default as counters
-}
-from './forms'
+export { default as reducers } from "./reducers";
