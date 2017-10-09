@@ -24,6 +24,8 @@ from rest_framework import renderers
 
 from .services import calculate_balance
 
+import datetime
+
 class HomeView(View):
 
     def get(self, request):
@@ -51,8 +53,30 @@ class IncomeTransactionAPI(ModelViewSet):
     def get_queryset(self):
         queryset = IncomeTransaction.objects.all()
         user_id = self.request.query_params.get('user_id', None)
+        interval = self.request.query_params.get('interval', None)
         if user_id is not None:
             queryset = queryset.filter(user_id=user_id)
+        if interval is not None:
+			today = datetime.datetime.now()
+			if interval == "year":
+				queryset = queryset.filter(created_at__year=today.year)
+			if interval == "month":
+				queryset = queryset.filter(created_at__year=today.year)
+				queryset = queryset.filter(created_at__month=today.month)
+			if interval == "week":
+				queryset = queryset.filter(created_at__year=today.year)
+				queryset = queryset.filter(created_at__month=today.month)
+				start_week = today - datetime.timedelta(today.weekday())
+				end_week = start_week + datetime.timedelta(7)
+				queryset = queryset.filter(created_at__range=[start_week, end_week])
+			if interval == "day":
+				queryset = queryset.filter(created_at__year=today.year)
+				queryset = queryset.filter(created_at__month=today.month)
+				start_week = today - datetime.timedelta(today.weekday())
+				end_week = start_week + datetime.timedelta(7)
+				queryset = queryset.filter(created_at__range=[start_week, end_week])
+				queryset = queryset.filter(created_at__day=today.day)
+			
         return queryset
 
 class ExpenditureTransactionAPI(ModelViewSet):
@@ -61,6 +85,28 @@ class ExpenditureTransactionAPI(ModelViewSet):
     def get_queryset(self):
         queryset = ExpenditureTransaction.objects.all()
         user_id = self.request.query_params.get('user_id', None)
+        interval = self.request.query_params.get('interval', None)
         if user_id is not None:
             queryset = queryset.filter(user_id=user_id)
+        if interval is not None:
+			today = datetime.datetime.now()
+			if interval == "year":
+				queryset = queryset.filter(created_at__year=today.year)
+			if interval == "month":
+				queryset = queryset.filter(created_at__year=today.year)
+				queryset = queryset.filter(created_at__month=today.month)
+			if interval == "week":
+				queryset = queryset.filter(created_at__year=today.year)
+				queryset = queryset.filter(created_at__month=today.month)
+				start_week = today - datetime.timedelta(today.weekday())
+				end_week = start_week + datetime.timedelta(7)
+				queryset = queryset.filter(created_at__range=[start_week, end_week])
+			if interval == "day":
+				queryset = queryset.filter(created_at__year=today.year)
+				queryset = queryset.filter(created_at__month=today.month)
+				start_week = today - datetime.timedelta(today.weekday())
+				end_week = start_week + datetime.timedelta(7)
+				queryset = queryset.filter(created_at__range=[start_week, end_week])
+				queryset = queryset.filter(created_at__day=today.day)
+			
         return queryset

@@ -10,7 +10,9 @@ import HomeCard from "../components/HomeCard";
 function mapStateToProps(state) {
 	if (
 		state.toggle.expenditureCategories == undefined ||
-		state.toggle.expenditureTransactions == undefined
+		state.toggle.expenditureTransactions == undefined ||
+		state.toggle.incomeCategories == undefined ||
+		state.toggle.incomeTransactions == undefined
 	) {
 		return { state: state.toggle };
 	}
@@ -25,15 +27,26 @@ function mapStateToProps(state) {
 			return category;
 		}
 	);
-	let totalAmount = state.toggle.expenditureTransactions
+	let income = state.toggle.incomeTransactions
 		.map(transaction => transaction.amount)
 		.reduce((sum, value) => sum + value, 0);
+
+	let expenditure = state.toggle.expenditureTransactions
+		.map(transaction => transaction.amount)
+		.reduce((sum, value) => sum + value, 0);
+
+	let balance = {
+		income: income,
+		expenditure: expenditure,
+		current: income - expenditure
+	};
+
 	const graphData = {
 		labels: expenditureCategories.map(category => category.name),
 		datasets: [
 			{
-				data: expenditureCategories.map(
-					category => category.amount / totalAmount * 100
+				data: expenditureCategories.map(category =>
+					(category.amount / expenditure * 100).toFixed(2)
 				),
 				backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
 				hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"]
@@ -41,7 +54,7 @@ function mapStateToProps(state) {
 		]
 	};
 
-	return { state: state.toggle, graphData: graphData };
+	return { state: state.toggle, graphData: graphData, balance: balance };
 }
 
 @connect(mapStateToProps)
@@ -49,6 +62,27 @@ class HomeContainer extends React.Component {
 	constructor(props) {
 		super(props);
 	}
+
+	day = () => {
+		console.log("day");
+		this.props.dispatch(actions.fetchExpenditureTransactions("day"));
+		this.props.dispatch(actions.fetchIncomeTransactions("day"));
+	};
+	week = () => {
+		console.log("week");
+		this.props.dispatch(actions.fetchExpenditureTransactions("week"));
+		this.props.dispatch(actions.fetchIncomeTransactions("week"));
+	};
+	month = () => {
+		console.log("month");
+		this.props.dispatch(actions.fetchExpenditureTransactions("month"));
+		this.props.dispatch(actions.fetchIncomeTransactions("month"));
+	};
+	year = () => {
+		console.log("year");
+		this.props.dispatch(actions.fetchExpenditureTransactions("year"));
+		this.props.dispatch(actions.fetchIncomeTransactions("year"));
+	};
 
 	componentDidMount() {
 		let { dispatch, state } = this.props;
@@ -62,7 +96,7 @@ class HomeContainer extends React.Component {
 			!state.isLoadingExpenditureTransactions &&
 			state.expenditureTransactions === undefined
 		) {
-			dispatch(actions.fetchExpenditureTransactions());
+			dispatch(actions.fetchExpenditureTransactions("year"));
 		}
 		if (
 			!state.isLoadingExpenditureCategories &&
@@ -90,7 +124,6 @@ class HomeContainer extends React.Component {
 
 	render() {
 		let { dispatch, state } = this.props;
-		console.log(state);
 		if (
 			(!state.isLoadingIncomeTransactions &&
 				state.incomeTransactions === undefined) ||
@@ -111,6 +144,11 @@ class HomeContainer extends React.Component {
 				<HomeCard
 					graphData={this.props.graphData}
 					categories={this.props.state.expenditureCategories}
+					balance={this.props.balance}
+					day={this.day}
+					week={this.week}
+					month={this.month}
+					year={this.year}
 				/>
 			</div>
 		);

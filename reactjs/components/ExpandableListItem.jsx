@@ -7,6 +7,7 @@ const formatDate = date =>
 		month: "short",
 		day: "numeric"
 	});
+
 const ExpandedListItem = props => {
 	const transactions = props.transactions;
 	const items = transactions.map(transaction => (

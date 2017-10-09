@@ -19,22 +19,28 @@ export function signup() {
 		type: SIGNUP
 	};
 }
-export function fetchIncomeTransactions() {
+export function fetchIncomeTransactions(interval) {
 	return function(dispatch) {
 		dispatch({
 			type: FETCH_INCOME_TRANSACTIONS
 		});
-		fetch("/api/income_transactions/?format=json&user_id=1")
+		fetch(
+			"/api/income_transactions/?format=json&user_id=1&interval=" +
+				interval
+		)
 			.then(response => response.json())
 			.then(json => dispatch(receiveIncomeTransactions(json)));
 	};
 }
-export function fetchExpenditureTransactions() {
+export function fetchExpenditureTransactions(interval) {
 	return function(dispatch) {
 		dispatch({
 			type: FETCH_EXPENDITURE_TRANSACTIONS
 		});
-		fetch("/api/expenditure_transactions/?format=json&user_id=1")
+		fetch(
+			"/api/expenditure_transactions/?format=json&user_id=1&interval=" +
+				interval
+		)
 			.then(response => response.json())
 			.then(json => dispatch(receiveExpenditureTransactions(json)));
 	};
