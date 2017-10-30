@@ -2,7 +2,7 @@
 
 {% block content %}
     <h1>Profile</h1>
-    <form method="POST">
+    <form name="profile" onsubmit="return validate()" method="POST">
     	{% csrf_token %}
 		{{ user_form.non_field_errors }}
 		{% for field in user_form %}
@@ -31,4 +31,9 @@
 		{% endfor %}
 		<button type="submit">Save changes</button>
     </form>
+{% endblock %}
+
+{% block scripts %}
+{% load static %}
+	<script type="text/javascript" src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
