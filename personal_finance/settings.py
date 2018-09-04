@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'registration',
     'personal_finance',
+    'webpack_loader',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,10 @@ STATICFILES_DIRS = [
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/local/',  # end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-local.json'),
+    }
+}
